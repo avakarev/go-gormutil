@@ -4,7 +4,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/avakarev/go-logutil"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gorm.io/gorm/logger"
@@ -28,9 +27,9 @@ func NewLogger(lvl logger.LogLevel) logger.Interface {
 }
 
 func init() {
-	lvl := logger.Error
-	if logutil.IsDebug() {
-		lvl = logger.Info
+	if lvl := os.Getenv("LOG_LEVEL"); lvl == zerolog.DebugLevel.String() {
+		Logger = NewLogger(logger.Info)
+	} else {
+		Logger = NewLogger(logger.Error)
 	}
-	Logger = NewLogger(lvl)
 }
