@@ -37,6 +37,20 @@ func Find[T any](tx *gorm.DB) []T {
 	return models
 }
 
+// Count returns number of record in given table
+func (db *DB) Count(model interface{}) int64 {
+	var count int64
+	db.Conn().Model(model).Count(&count)
+	return count
+}
+
+// CountBy returns number of record in given table with given conditions
+func (db *DB) CountBy(model interface{}, cond interface{}, args ...interface{}) int64 {
+	var count int64
+	db.Conn().Model(model).Where(cond, args).Count(&count)
+	return count
+}
+
 // ExistsBy checks whether given model exists with given conditions
 //
 // @TODO: try to optimize the query to something like
